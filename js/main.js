@@ -18,13 +18,21 @@ function refreshPanels() {
   $('players').innerHTML = ST.players.map(p =>
     '<div class="prow' + (p.id === ST.turn ? ' active' : '') + '">' +
     '<span class="dot" style="background:' + p.color + '"></span>' +
-    '<span class="pname">' + p.name + (p.isAI ? ' 🤖' : '') + '</span>' +
+    '<span class="pname">' + p.name + '</span>' +
     '<span class="pscore">' + p.score + '</span>' +
     '<span class="pmee">' + '♟'.repeat(p.meeples) + '</span></div>'
   ).join('');
   $('deckCount').textContent = 'Deck: ' + ST.deck.length;
   $('turnLabel').textContent = ST.phase === 'over' ? 'Game over' :
+    ST.phase === 'meeple' && !ST.players[ST.turn].isAI ? 'Choose a follower or skip' :
     (ST.players[ST.turn].name + "'s turn" + (ST.players[ST.turn].isAI ? ' (thinking…)' : ''));
+  const compact = window.matchMedia('(max-width: 700px)').matches;
+  $('boardHelp').textContent = ST.phase === 'meeple' && !ST.players[ST.turn].isAI ?
+    (compact ? 'TAP A FOLLOWER · OR SKIP' : 'CHOOSE A FOLLOWER ON THE TILE · OR SKIP') :
+    (compact ? 'TAP + TO PLACE · DRAG TO PAN' : 'CLICK A + TO PLACE · DRAG TO PAN · SCROLL TO ZOOM · R TO ROTATE');
+  $('tileInstruction').textContent = ST.players[ST.turn].isAI ? 'The bot is choosing a place' :
+    ST.phase === 'meeple' ? 'Place a follower, or skip' : 'Find a matching place on the map';
+  $('btnRotate').disabled = ST.phase !== 'place' || ST.players[ST.turn].isAI;
   $('btnSkipMeeple').hidden = !(ST.phase === 'meeple' && !ST.players[ST.turn].isAI);
 }
 
@@ -192,12 +200,14 @@ function endGame() {
 let renderReady = false;
 function attachState(st) {
   render.st = st;
-  render.cam = { x: 0, y: 0, scale: 0.9 };
+  render.cam = { x: 0, y: 0, scale: 1.25 };
   st.humanActing = false;
 }
 
 function startGame(humans, ais) {
   ST = newGameState({ humans, ais });
+  render.cam = { x: 0, y: 0, scale: 1.25 };
+  render.hoverCell = null;
   busy = true;
   $('menuModal').hidden = true;
   $('overModal').hidden = true;
@@ -228,9 +238,13 @@ window.addEventListener('keydown', e => {
   if (e.key === 'r' || e.key === 'R') rotateCurrent();
   if (e.key === 'Enter' && ST && ST.phase === 'meeple') onSkipMeeple();
 });
+window.addEventListener('resize', () => { if (ST) refreshPanels(); });
 
 $('btnRotate').addEventListener('click', rotateCurrent);
 $('btnSkipMeeple').addEventListener('click', onSkipMeeple);
+$('zoomIn').addEventListener('click', () => { render.cam.scale = Math.min(2.5, render.cam.scale * 1.2); });
+$('zoomOut').addEventListener('click', () => { render.cam.scale = Math.max(0.3, render.cam.scale / 1.2); });
+$('centerMap').addEventListener('click', () => { render.cam.x = 0; render.cam.y = 0; });
 $('btnStart').addEventListener('click', () => {
   const humans = parseInt($('selHumans').value, 10);
   const ais = parseInt($('selAis').value, 10);

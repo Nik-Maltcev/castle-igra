@@ -4,30 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Castlelands — Medieval Tile-Laying Game</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <div id="app">
   <div id="topbar">
-    <div id="logo">🏰 <b>CASTLELANDS</b></div>
+    <div id="logo"><span class="brand-mark" aria-hidden="true">♜</span><span><b>CASTLELANDS</b><small>THE KINGDOM IN YOUR HANDS</small></span></div>
     <div id="turnLabel"></div>
     <div id="deckCount"></div>
   </div>
   <div id="main">
-    <div id="canvasWrap"><canvas id="board"></canvas></div>
+    <div id="canvasWrap"><canvas id="board"></canvas><div class="board-help" id="boardHelp">CLICK A + TO PLACE · DRAG TO PAN · SCROLL TO ZOOM · R TO ROTATE</div><div class="map-controls" aria-label="Map controls"><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="centerMap" aria-label="Center map">⌖</button></div></div>
     <div id="side">
       <div class="panel">
-        <div class="panel-title">Your tile</div>
+        <div class="panel-title">01 <span>Current tile</span></div>
+        <p class="panel-copy" id="tileInstruction">Find a matching place on the map</p>
         <canvas id="preview" width="120" height="120"></canvas>
         <button id="btnRotate">↻ Rotate <small>(R)</small></button>
         <button id="btnSkipMeeple" hidden>Skip follower</button>
       </div>
       <div class="panel" id="playersPanel">
-        <div class="panel-title">Players</div>
+        <div class="panel-title">02 <span>Players</span></div>
         <div id="players"></div>
       </div>
       <div class="panel grow">
-        <div class="panel-title">Log</div>
+        <div class="panel-title">03 <span>Chronicle</span></div>
         <div id="log"></div>
       </div>
     </div>
@@ -36,8 +37,10 @@
 
 <div id="menuModal" class="modal">
   <div class="modal-box">
-    <h1>🏰 Castlelands</h1>
-    <p class="tagline">Build the medieval countryside, tile by tile.</p>
+    <div class="modal-emblem" aria-hidden="true">♜</div>
+    <p class="eyebrow">A KINGDOM AWAITS</p>
+    <h1>Castlelands</h1>
+    <p class="tagline">Build a kingdom, one tile at a time.</p>
     <div class="menurow">
       <label>Human players
         <select id="selHumans">
@@ -72,7 +75,7 @@
 <script src="js/tiles.js"></script>
 <script src="js/logic.js"></script>
 <script src="js/ai.js"></script>
-<script src="js/render.js"></script>
-<script src="js/main.js"></script>
+<script src="js/render.js?v=4"></script>
+<script src="js/main.js?v=5"></script>
 </body>
 </html>
