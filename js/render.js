@@ -20,6 +20,7 @@ const render = {
   onCellClick: null,
   onSpotClick: null,
   onRotate: null,
+  choiceOverlay: null,
 };
 
 const EDGE_MID = [[0.5, 0], [1, 0.5], [0.5, 1], [0, 0.5]]; // N,E,S,W in tile units
@@ -340,27 +341,6 @@ function drawBoard() {
     }
   }
 
-  // meeple placement hotspots
-  if (st.phase === 'meeple' && st.meepleSpots) {
-    const { x, y } = st.justPlaced;
-    const def = rotatedTemplate(st.current.tpl, st.current.rot);
-    const pid = st.turn;
-    for (const spot of st.meepleSpots) {
-      const [ax, ay] = segAnchor(def, spot.type, spot.segIdx, S);
-      const px = x * S + ax, py = y * S + ay;
-      ctx.beginPath();
-      ctx.arc(px, py, 14, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.25)';
-      ctx.fill();
-      ctx.setLineDash([4, 3]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.9)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.setLineDash([]);
-      drawMeeple(ctx, px, py, st.players[pid].color, 0.85);
-    }
-  }
-
   // floaters
   const now = performance.now();
   st.floaters = st.floaters.filter(f => now - f.born < 1600);
@@ -394,8 +374,41 @@ function drawPreview() {
   pc.restore();
 }
 
+function positionFollowerChoices() {
+  const choices = render.choiceOverlay;
+  const st = render.st;
+  if (!choices || choices.hidden || !st.justPlaced) return;
+  const W = render.canvas.clientWidth, H = render.canvas.clientHeight;
+  const def = rotatedTemplate(st.current.tpl, st.current.rot);
+  const positions = st.meepleSpots.map(spot => {
+    const [ax, ay] = segAnchor(def, spot.type, spot.segIdx, TILE);
+    return worldToScreen(st.justPlaced.x * TILE + ax, st.justPlaced.y * TILE + ay);
+  });
+  // Keep nearby choices separate, including a road through a monastery.
+  for (let i = 0; i < positions.length; i++) {
+    for (let j = i + 1; j < positions.length; j++) {
+      let dx = positions[j][0] - positions[i][0];
+      let dy = positions[j][1] - positions[i][1];
+      const distance = Math.hypot(dx, dy);
+      if (distance >= 82) continue;
+      if (distance < 1) { dx = 1; dy = 0; }
+      else { dx /= distance; dy /= distance; }
+      const shift = (82 - distance) / 2;
+      positions[i][0] -= dx * shift;
+      positions[i][1] -= dy * shift;
+      positions[j][0] += dx * shift;
+      positions[j][1] += dy * shift;
+    }
+  }
+  const pad = 45;
+  [...choices.children].forEach((button, i) => {
+    button.style.left = Math.max(Math.min(pad, W / 2), Math.min(W - pad, positions[i][0])) + 'px';
+    button.style.top = Math.max(Math.min(pad, H / 2), Math.min(H - pad, positions[i][1])) + 'px';
+  });
+}
+
 function frame() {
-  if (render.st) { drawBoard(); drawPreview(); }
+  if (render.st) { drawBoard(); drawPreview(); positionFollowerChoices(); }
   requestAnimationFrame(frame);
 }
 
@@ -403,6 +416,7 @@ function initRender(canvas, previewCanvas, st, hooks) {
   render.canvas = canvas;
   render.ctx = canvas.getContext('2d');
   render.previewCtx = previewCanvas.getContext('2d');
+  render.choiceOverlay = document.getElementById('meepleChoices');
   render.st = st;
   Object.assign(render, hooks);
 
@@ -448,17 +462,6 @@ function initRender(canvas, previewCanvas, st, hooks) {
     const [wx, wy] = screenToWorld(mx, my);
     const cx = Math.floor(wx / TILE), cy = Math.floor(wy / TILE);
     if (render.st.phase === 'place' && render.onCellClick) render.onCellClick(cx, cy);
-    else if (render.st.phase === 'meeple' && render.onSpotClick) {
-      // find hotspot within radius
-      const { x, y } = render.st.justPlaced;
-      const def = rotatedTemplate(render.st.current.tpl, render.st.current.rot);
-      for (const spot of render.st.meepleSpots || []) {
-        const [ax, ay] = segAnchor(def, spot.type, spot.segIdx, TILE);
-        const px = (x * TILE + ax - render.cam.x) * render.cam.scale + r.width / 2;
-        const py = (y * TILE + ay - render.cam.y) * render.cam.scale + r.height / 2;
-        if (Math.hypot(px - mx, py - my) < 18) { render.onSpotClick(spot); return; }
-      }
-    }
   });
   canvas.addEventListener('wheel', e => {
     e.preventDefault();

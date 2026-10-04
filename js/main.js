@@ -6,6 +6,40 @@ let busy = false; // animation/turn lock
 
 const $ = id => document.getElementById(id);
 
+const followerNames = { city: 'Город', road: 'Дорога', monastery: 'Монастырь' };
+
+function showFollowerChoices() {
+  const choices = $('meepleChoices');
+  const canChoose = ST.phase === 'meeple' && !ST.players[ST.turn].isAI && ST.meepleSpots.length;
+  choices.hidden = !canChoose;
+  if (!canChoose) {
+    choices.replaceChildren();
+    return;
+  }
+  const totals = {};
+  const seen = {};
+  for (const spot of ST.meepleSpots) totals[spot.type] = (totals[spot.type] || 0) + 1;
+  const buttons = ST.meepleSpots.map(spot => {
+    const name = followerNames[spot.type];
+    const number = totals[spot.type] > 1 ? ' ' + ((seen[spot.type] = (seen[spot.type] || 0) + 1)) : '';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'meeple-choice choice-' + spot.type;
+    button.setAttribute('aria-label', 'Поставить человечка: ' + name + number);
+    button.title = 'Поставить человечка: ' + name + number;
+    const icon = document.createElement('span');
+    icon.className = 'choice-icon';
+    icon.textContent = '♟';
+    const label = document.createElement('span');
+    label.className = 'choice-label';
+    label.textContent = name + number;
+    button.append(icon, label);
+    button.addEventListener('click', () => onSpotClick(spot));
+    return button;
+  });
+  choices.replaceChildren(...buttons);
+}
+
 function logMsg(msg) {
   ST.log.push(msg);
   const el = $('log');
@@ -28,12 +62,13 @@ function refreshPanels() {
     (ST.players[ST.turn].name + "'s turn" + (ST.players[ST.turn].isAI ? ' (thinking…)' : ''));
   const compact = window.matchMedia('(max-width: 700px)').matches;
   $('boardHelp').textContent = ST.phase === 'meeple' && !ST.players[ST.turn].isAI ?
-    (compact ? 'TAP A FOLLOWER · OR SKIP' : 'CHOOSE A FOLLOWER ON THE TILE · OR SKIP') :
+    (compact ? 'TAP A LABELED CIRCLE · OR SKIP' : 'CLICK A LABELED CIRCLE TO PLACE A FOLLOWER · OR SKIP') :
     (compact ? 'TAP + TO PLACE · DRAG TO PAN' : 'CLICK A + TO PLACE · DRAG TO PAN · SCROLL TO ZOOM · R TO ROTATE');
   $('tileInstruction').textContent = ST.players[ST.turn].isAI ? 'The bot is choosing a place' :
-    ST.phase === 'meeple' ? 'Place a follower, or skip' : 'Find a matching place on the map';
+    ST.phase === 'meeple' ? 'Choose a marked place, or skip' : 'Find a matching place on the map';
   $('btnRotate').disabled = ST.phase !== 'place' || ST.players[ST.turn].isAI;
   $('btnSkipMeeple').hidden = !(ST.phase === 'meeple' && !ST.players[ST.turn].isAI);
+  showFollowerChoices();
 }
 
 function computeValidCells() {
@@ -236,7 +271,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 window.addEventListener('keydown', e => {
   if (e.key === 'r' || e.key === 'R') rotateCurrent();
-  if (e.key === 'Enter' && ST && ST.phase === 'meeple') onSkipMeeple();
+  if (e.key === 'Enter' && ST && ST.phase === 'meeple' && !e.target.closest?.('.meeple-choice')) onSkipMeeple();
 });
 window.addEventListener('resize', () => { if (ST) refreshPanels(); });
 

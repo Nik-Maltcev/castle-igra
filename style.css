@@ -18,6 +18,16 @@ button:focus-visible, select:focus-visible { outline: 3px solid #efbf63; outline
 #canvasWrap { flex: 1; position: relative; min-width: 0; overflow: hidden; background: #c5b78f; }
 #board { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
 #board:active { cursor: grabbing; }
+.meeple-choices { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.meeple-choices button { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; width: 74px; height: 74px; margin: 0; padding: 4px; border: 3px solid #fff5d5; border-radius: 50%; color: #fff; background: #925124; box-shadow: 0 0 0 3px #31251bb3, 0 0 20px 7px #ffd887c2, inset 0 2px 8px #ffffff4d; pointer-events: auto; text-align: center; text-shadow: 0 1px 2px #1d170f; transform: translate(-50%, -50%); }
+.meeple-choices button:hover, .meeple-choices button:focus-visible { background: #b86e31; transform: translate(-50%, -50%) scale(1.07); }
+.meeple-choices .choice-road { background: #24677b; box-shadow: 0 0 0 3px #173038b3, 0 0 20px 7px #83d8edc2, inset 0 2px 8px #ffffff4d; }
+.meeple-choices .choice-road:hover, .meeple-choices .choice-road:focus-visible { background: #31859b; }
+.meeple-choices .choice-monastery { background: #68518b; box-shadow: 0 0 0 3px #2c223eb3, 0 0 20px 7px #c7a5f2c2, inset 0 2px 8px #ffffff4d; }
+.meeple-choices .choice-monastery:hover, .meeple-choices .choice-monastery:focus-visible { background: #8569ac; }
+.choice-icon { font: 22px/1 Georgia, serif; }
+.choice-label { max-width: 64px; font: 700 12px/1.05 system-ui, sans-serif; overflow-wrap: anywhere; }
+.choice-monastery .choice-label { font-size: 10px; }
 .board-help { position: absolute; left: 18px; bottom: 18px; padding: 10px 14px; border: 1px solid #816b49aa; border-radius: 4px; background: #f1e4c8e8; box-shadow: 0 3px 14px #473d2b33; color: #635035; pointer-events: none; font: 10px system-ui, sans-serif; letter-spacing: .09em; }
 .board-help span { color: #ab7942; padding: 0 5px; }
 .map-controls { position: absolute; right: 18px; bottom: 18px; display: flex; gap: 5px; }

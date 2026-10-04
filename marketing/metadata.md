@@ -17,7 +17,7 @@ Castlelands is a turn-based tile-laying strategy game. Rotate each tile and find
 1. Start a game and choose the number of human and computer players.
 2. Rotate the current tile with **R** or the **Rotate** button.
 3. Click or tap a highlighted **+** space to place the tile.
-4. Click or tap a follower marker on the new tile to claim a city, road, or monastery; choose **Skip follower** to keep your followers for later.
+4. Click or tap a labeled circle on the new tile to claim a city, road, or monastery; choose **Skip follower** to keep your followers for later.
 5. Drag the map to pan. Use the mouse wheel or the on-screen **+ / −** buttons to zoom.
 
 The game is local hot-seat play; it does not offer online multiplayer.

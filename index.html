@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Castlelands — Medieval Tile-Laying Game</title>
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 <div id="app">
@@ -14,7 +14,7 @@
     <div id="deckCount"></div>
   </div>
   <div id="main">
-    <div id="canvasWrap"><canvas id="board"></canvas><div class="board-help" id="boardHelp">CLICK A + TO PLACE · DRAG TO PAN · SCROLL TO ZOOM · R TO ROTATE</div><div class="map-controls" aria-label="Map controls"><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="centerMap" aria-label="Center map">⌖</button></div></div>
+    <div id="canvasWrap"><canvas id="board"></canvas><div id="meepleChoices" class="meeple-choices" aria-label="Follower placement choices" hidden></div><div class="board-help" id="boardHelp">CLICK A + TO PLACE · DRAG TO PAN · SCROLL TO ZOOM · R TO ROTATE</div><div class="map-controls" aria-label="Map controls"><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="centerMap" aria-label="Center map">⌖</button></div></div>
     <div id="side">
       <div class="panel">
         <div class="panel-title">01 <span>Current tile</span></div>
@@ -58,8 +58,8 @@
       </label>
     </div>
     <button id="btnStart" class="primary">▶ Start game</button>
-    <p class="hint">Drag to pan · wheel to zoom · R to rotate · place a tile, then optionally
-    a follower on a city, road or monastery to score points.</p>
+    <p class="hint">Drag to pan · wheel to zoom · R to rotate. After placing a tile,
+    tap a labeled circle to place a follower, or choose Skip follower.</p>
   </div>
 </div>
 
@@ -75,7 +75,7 @@
 <script src="js/tiles.js"></script>
 <script src="js/logic.js"></script>
 <script src="js/ai.js"></script>
-<script src="js/render.js?v=4"></script>
-<script src="js/main.js?v=6"></script>
+<script src="js/render.js?v=5"></script>
+<script src="js/main.js?v=7"></script>
 </body>
 </html>
