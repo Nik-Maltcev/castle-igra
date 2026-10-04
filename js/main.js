@@ -180,6 +180,7 @@ function rotateCurrent() {
 /* ---------- game over ---------- */
 function endGame() {
   ST.phase = 'over';
+  window.castleSDK.gameplayStop();
   const lines = finalScoring(ST);
   refreshPanels();
   const ranked = [...ST.players].sort((a, b) => b.score - a.score);
@@ -191,9 +192,7 @@ function endGame() {
     ranked.map(p => '<tr><td><span class="dot" style="background:' + p.color + '"></span>' + p.name + '</td><td>' + p.score + '</td></tr>').join('') +
     '</table>';
   $('overModal').hidden = false;
-  if (window.CrazyGames && window.CrazyGames.SDK) {
-    try { window.CrazyGames.SDK.game.happytime(); } catch (e) { }
-  }
+  if (!ranked[0].isAI) window.castleSDK.happytime();
 }
 
 /* ---------- boot ---------- */
@@ -206,6 +205,7 @@ function attachState(st) {
 
 function startGame(humans, ais) {
   ST = newGameState({ humans, ais });
+  window.castleSDK.gameplayStart();
   render.cam = { x: 0, y: 0, scale: 1.25 };
   render.hoverCell = null;
   busy = true;

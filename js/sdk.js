@@ -1,22 +1,46 @@
 'use strict';
-/* CrazyGames SDK adapter.
- * On CrazyGames the real SDK is injected by the portal; locally these are
- * safe no-ops so the game runs standalone. See docs.crazygames.com. */
+/* CrazyGames HTML5 SDK v3 adapter. Game events are queued until init completes. */
 (function () {
-  window.CrazyGames = window.CrazyGames || {};
-  const sdk = window.CrazyGames.SDK;
-  if (!sdk) {
-    window.CrazyGames.SDK = {
-      game: {
-        gameplayStart() { },
-        gameplayStop() { },
-        happytime() { },
-        sdkGameLoadingStart() { },
-        sdkGameLoadingStop() { },
-      },
-      ad: {
-        requestAd(type, callbacks) { if (callbacks && callbacks.adFinished) callbacks.adFinished(); },
-      },
-    };
+  function loadSdk() {
+    if (window.CrazyGames && window.CrazyGames.SDK) {
+      return Promise.resolve(window.CrazyGames.SDK);
+    }
+    return new Promise(resolve => {
+      const script = document.createElement('script');
+      script.src = 'https://sdk.crazygames.com/crazygames-sdk-v3.js';
+      script.onload = () => resolve(window.CrazyGames && window.CrazyGames.SDK);
+      script.onerror = () => resolve(null);
+      document.head.appendChild(script);
+    });
   }
+
+  const ready = loadSdk().then(async sdk => {
+    if (!sdk || typeof sdk.init !== 'function') return null;
+    await sdk.init();
+    return sdk;
+  }).catch(error => {
+    console.warn('CrazyGames SDK unavailable; running standalone.', error);
+    return null;
+  });
+
+  let queue = Promise.resolve();
+  function gameEvent(name) {
+    queue = queue.then(async () => {
+      const sdk = await ready;
+      if (!sdk || !sdk.game || typeof sdk.game[name] !== 'function') return;
+      try {
+        await sdk.game[name]();
+      } catch (error) {
+        console.warn('CrazyGames event failed:', name, error);
+      }
+    });
+    return queue;
+  }
+
+  window.castleSDK = {
+    ready,
+    gameplayStart: () => gameEvent('gameplayStart'),
+    gameplayStop: () => gameEvent('gameplayStop'),
+    happytime: () => gameEvent('happytime'),
+  };
 })();

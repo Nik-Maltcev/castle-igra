@@ -66,6 +66,17 @@ button.primary:hover { background: #bb7b3a; }
 .scoretable th { color: #765a31; }
 .fineline { padding: 3px; color: #5d503b; text-align: left; font: 12px system-ui, sans-serif; }
 
+@media (max-height: 600px) and (min-width: 701px) {
+  #side { gap: 6px; padding: 7px; }
+  .panel { padding: 7px 9px; }
+  .panel-title { margin-bottom: 5px; padding-bottom: 4px; }
+  .panel-copy { margin-bottom: 5px; font-size: 10px; }
+  #preview { width: 78px; height: 78px; margin-bottom: 5px; border-width: 2px; }
+  #side button { padding: 6px; margin-top: 4px; }
+  #players .prow { padding: 3px 4px; }
+  #log { font-size: 11px; }
+}
+
 @media (max-width: 700px) {
   #topbar { min-height: 55px; padding: 7px 10px; gap: 8px; }
   #logo { min-width: 0; gap: 6px; }

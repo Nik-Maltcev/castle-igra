@@ -1,8 +1,9 @@
 # Castlelands
 
-A medieval tile-laying game for 1–4 humans + up to 3 bots (hot-seat). Place tiles to
+A medieval tile-laying game for 1–3 humans + up to 3 bots (hot-seat). Place tiles to
 build cities, roads and monasteries; place followers to score points. Pure vanilla
-JS + Canvas, zero external assets — all art is procedurally drawn.
+JS + Canvas. In-game art is procedurally drawn; the CrazyGames SDK loads
+separately and the game still runs if it is unavailable.
 
 > Positioning: an original game *inspired by* classic tile-laying board games.
 > Name, art, and copy are original. Do **not** brand or market it using trademarks
@@ -30,7 +31,7 @@ No build step, no dependencies.
   completions and meeple spots)
 - `js/render.js` — procedural canvas art, camera pan/zoom, click/hover input
 - `js/main.js` — turn loop, UI panels, game over
-- `js/sdk.js` — CrazyGames SDK no-op stub (real SDK is injected by the portal)
+- `js/sdk.js` — CrazyGames HTML5 SDK v3 loader and event adapter
 
 ## Rules implemented
 
@@ -41,18 +42,29 @@ No build step, no dependencies.
 - Tile with no legal spot is discarded (auto-drawn replacement)
 - Farmers/fields are intentionally not implemented (v2 candidate)
 
-## CrazyGames submission checklist
+## CrazyGames release package
 
-1. [ ] Zip the folder contents (index.html at zip root) and upload via the
-      [developer portal](https://developer.crazygames.com).
-2. [ ] Replace `js/sdk.js` with the real CrazyGames SDK flow: call
-      `SDK.game.gameplayStart()` when a match starts and `gameplayStop()` when it
-      ends; `happytime()` on victory (hook already in place in `main.js`).
-3. [ ] Prepare store assets: cover 16:9, screenshots 16:9 and 1080×607, icon.
-4. [ ] QA expectations: responsive resize (works), no external network calls
-      (true), instant load (<1 MB, true), English UI (true).
-5. [ ] Optional v2: fields/farmers, in-game tutorial, sound, save/resume,
-      emoji-free icons for store art.
+- `release/castlelands-crazygames.zip` contains only the game files, with
+  `index.html` at the archive root.
+- `marketing/covers/` contains the required landscape, portrait, and square
+  cover images.
+- `marketing/video/` contains 17.2-second silent landscape and portrait
+  previews made from actual gameplay stills. `marketing/screenshots/` contains
+  extra gameplay screenshots.
+- `marketing/metadata.md` contains English description and controls copy
+  for the Developer Portal.
+- The HTML5 SDK v3 is loaded and initialized by `js/sdk.js`. Game start,
+  game over, and a human victory report gameplay start, gameplay stop, and
+  happy time respectively. The game remains playable when offline.
+
+The remaining platform step is to upload the package and promotional assets
+through the [Developer Portal](https://developer.crazygames.com), run its
+preview/QA tool, and submit for CrazyGames review. This needs access to the
+developer account. Basic Launch does not require SDK monetization; Full
+Launch does require SDK integration.
+
+Optional later additions: fields/farmers, in-game tutorial, sound, and
+save/resume.
 
 ## Testing done
 
