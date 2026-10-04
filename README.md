@@ -52,6 +52,8 @@ No build step, no dependencies.
   `index.html` at the archive root.
 - Rebuild the archive with `python release/build-zip.py` after editing the
   game. It includes the local font files and their licenses.
+- The CrazyGames HTML5 upload field accepts a folder. Extract the archive to
+  `release/crazygames-upload/` and select that folder in the Developer Portal.
 - `marketing/covers/` contains the required landscape, portrait, and square
   cover images.
 - `marketing/video/` contains 17.2-second silent landscape and portrait
