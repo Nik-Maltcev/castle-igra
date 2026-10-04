@@ -6,7 +6,7 @@ let busy = false; // animation/turn lock
 
 const $ = id => document.getElementById(id);
 
-const followerNames = { city: 'Город', road: 'Дорога', monastery: 'Монастырь' };
+const followerNames = { city: 'City', road: 'Road', monastery: 'Monastery' };
 
 function showFollowerChoices() {
   const choices = $('meepleChoices');
@@ -25,8 +25,8 @@ function showFollowerChoices() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'meeple-choice choice-' + spot.type;
-    button.setAttribute('aria-label', 'Поставить человечка: ' + name + number);
-    button.title = 'Поставить человечка: ' + name + number;
+    button.setAttribute('aria-label', 'Place follower on ' + name + number);
+    button.title = 'Place follower on ' + name + number;
     const icon = document.createElement('span');
     icon.className = 'choice-icon';
     icon.textContent = '♟';
