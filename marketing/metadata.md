@@ -10,17 +10,17 @@ Build a medieval kingdom tile by tile. Connect roads, complete cities, and claim
 
 ## Description
 
-Castlelands is a turn-based tile-laying strategy game. Rotate each tile and find a place where its roads, cities, and fields match the growing map. Place followers on cities, roads, or monasteries to claim points, then finish those features to score. Play against computer opponents or take turns with friends on one device. When the deck runs out, the highest score wins.
+Castlelands is a turn-based tile-laying strategy game. Rotate each tile and find a place where its roads, cities, and fields match the growing map. Place followers on cities, roads, or monasteries to claim points, then finish those features to score. Play solo against one to three computer opponents. When the deck runs out, the highest score wins.
 
 ## How to play
 
-1. Start a game and choose the number of human and computer players.
+1. Start a game and choose the number of computer opponents.
 2. Rotate the current tile with **R** or the **Rotate** button.
 3. Click or tap a highlighted **+** space to place the tile.
 4. Click or tap a labeled circle on the new tile to claim a city, road, or monastery; choose **Skip follower** to keep your followers for later.
 5. Drag the map to pan. Use the mouse wheel or the on-screen **+ / −** buttons to zoom.
 
-The game is local hot-seat play; it does not offer online multiplayer.
+The game is single-player against computer opponents; it does not offer online multiplayer.
 
 ## Promotional assets
 

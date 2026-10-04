@@ -1,6 +1,6 @@
 # Castlelands
 
-A medieval tile-laying game for 1–3 humans + up to 3 bots (hot-seat). Place tiles to
+A medieval tile-laying game for one human against 1–3 bots. Place tiles to
 build cities, roads and monasteries; place followers to score points. Pure vanilla
 JS + Canvas. In-game art is procedurally drawn; the CrazyGames SDK loads
 separately and the game still runs if it is unavailable.

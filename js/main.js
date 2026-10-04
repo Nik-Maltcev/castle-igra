@@ -238,8 +238,8 @@ function attachState(st) {
   st.humanActing = false;
 }
 
-function startGame(humans, ais) {
-  ST = newGameState({ humans, ais });
+function startGame(ais) {
+  ST = newGameState({ humans: 1, ais });
   window.castleSDK.gameplayStart();
   render.cam = { x: 0, y: 0, scale: 1.25 };
   render.hoverCell = null;
@@ -281,9 +281,8 @@ $('zoomIn').addEventListener('click', () => { render.cam.scale = Math.min(2.5, r
 $('zoomOut').addEventListener('click', () => { render.cam.scale = Math.max(0.3, render.cam.scale / 1.2); });
 $('centerMap').addEventListener('click', () => { render.cam.x = 0; render.cam.y = 0; });
 $('btnStart').addEventListener('click', () => {
-  const humans = parseInt($('selHumans').value, 10);
   const ais = parseInt($('selAis').value, 10);
-  startGame(humans, ais);
+  startGame(ais);
 });
 $('btnAgain').addEventListener('click', () => {
   $('overModal').hidden = true;
