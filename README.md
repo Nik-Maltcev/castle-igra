@@ -32,6 +32,10 @@ No build step, no dependencies.
 - `js/render.js` — procedural canvas art, camera pan/zoom, click/hover input
 - `js/main.js` — turn loop, UI panels, game over
 - `js/sdk.js` — CrazyGames HTML5 SDK v3 loader and event adapter
+- `fonts/` — locally bundled [Cinzel](https://github.com/google/fonts/tree/main/ofl/cinzel),
+  [Cinzel Decorative](https://github.com/google/fonts/tree/main/ofl/cinzeldecorative),
+  and [Alegreya Sans](https://github.com/google/fonts/tree/main/ofl/alegreyasans)
+  with their SIL Open Font License notices
 
 ## Rules implemented
 
@@ -46,6 +50,8 @@ No build step, no dependencies.
 
 - `release/castlelands-crazygames.zip` contains only the game files, with
   `index.html` at the archive root.
+- Rebuild the archive with `python release/build-zip.py` after editing the
+  game. It includes the local font files and their licenses.
 - `marketing/covers/` contains the required landscape, portrait, and square
   cover images.
 - `marketing/video/` contains 17.2-second silent landscape and portrait
