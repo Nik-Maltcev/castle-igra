@@ -87,10 +87,9 @@ button.primary:hover { background: #bb7b3a; }
   #deckCount { padding: 5px 8px; font-size: 10px; }
   #main { flex-direction: column; }
   #canvasWrap { min-height: 0; }
-  #side { width: 100%; height: 186px; flex: none; flex-direction: row; overflow-x: auto; overflow-y: hidden; border-left: 0; border-top: 3px solid #ad8547; padding: 8px; }
-  #side .panel { min-width: 160px; padding: 8px; }
-  #side .panel:first-child { min-width: 150px; }
-  #side .panel.grow { min-width: 185px; }
+  #side { width: 100%; height: 186px; flex: none; flex-direction: row; flex-wrap: wrap; align-content: flex-start; overflow-x: hidden; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #ad8547 #1c2b24; border-left: 0; border-top: 3px solid #ad8547; padding: 8px; }
+  #side .panel { flex: 1 1 calc(50% - 5px); min-width: 0; padding: 8px; }
+  #side .panel.grow { flex: 1 1 100%; min-width: 0; }
   .panel-title { margin-bottom: 6px; padding-bottom: 5px; }
   .panel-copy { display: none; }
   #preview { width: 72px; height: 72px; margin-bottom: 4px; border-width: 2px; }
